@@ -12,7 +12,7 @@
     "prettier": "^2.0.5"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/mocha/bin/mocha tests/app.spec.js"
   },
   "keywords": [
     "Challonge",

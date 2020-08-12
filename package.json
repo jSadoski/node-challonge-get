@@ -1,0 +1,24 @@
+{
+  "name": "challonge-get",
+  "version": "1.0.0",
+  "description": "Node API implementation of all GET methods at Challonge.com leveraging node-fetch.",
+  "main": "app.js",
+  "dependencies": {
+    "node-fetch": "2.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "mocha": "^8.1.1",
+    "prettier": "^2.0.5"
+  },
+  "scripts": {
+    "test": "app.spec.js"
+  },
+  "keywords": [
+    "Challonge",
+    "GET",
+    "API"
+  ],
+  "author": "Joe Sadoski",
+  "license": "ISC"
+}

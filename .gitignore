@@ -122,3 +122,6 @@ dist
 
 # Ignore test credentials
 tests/.credentials.json
+
+# VSCode settings
+.vscode/

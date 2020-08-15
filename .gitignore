@@ -125,3 +125,6 @@ tests/.credentials.json
 
 # VSCode settings
 .vscode/
+
+# Mocha test credentials
+test/.credentials.json

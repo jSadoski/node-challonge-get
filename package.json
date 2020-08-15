@@ -10,10 +10,13 @@
     "chai": "^4.2.0",
     "eslint": "^7.6.0",
     "mocha": "^8.1.1",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha tests/app.spec.js"
+    "test": "./node_modules/mocha/bin/mocha tests/app.spec.js",
+    "debug": "node --inspect ./node_modules/mocha/bin/mocha tests/app.spec.js"
   },
   "keywords": [
     "Challonge",

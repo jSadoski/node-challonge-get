@@ -122,10 +122,35 @@ class API {
     };
   };
 
-  participants = () => {
+  /**
+   * Gets participants (.index()) or participant (.show()).
+   *
+   * @param {String} tournament
+   * @return {Object} Contains .index() and .show()
+   */
+  participants = (tournament) => {
     return {
-      index: () => {},
-      show: () => {},
+      /**
+       * Returns all the participants of the given tournament.
+       *
+       * @returns {Array} An array of participant JSON objects.
+       */
+      index: async () => {
+        const method = `tournaments/${tournament}/participants`;
+        const response = await this.retrieve(method);
+        return response;
+      },
+      /**
+       * Returns a participant at the given ID
+       *
+       * @param {String} participant_id The participant's ID
+       * @returns {Object} The participant's JSON object
+       */
+      show: async (participant_id) => {
+        const method = `tournaments/${tournament}/participants/${participant_id}`;
+        const response = await this.retrieve(method);
+        return response.participant;
+      },
     };
   };
 

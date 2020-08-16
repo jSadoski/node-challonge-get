@@ -9,9 +9,9 @@ describe('API', function () {
     api = new challonge.API(credentials.key);
   });
 
-  describe('tournaments()', function () {
-    describe('tournaments().index()', function () {
-      it('correctly returns tournaments', async function () {
+  describe('.tournaments()', function () {
+    describe('.index()', function () {
+      it('returns tournaments', async function () {
         let tournaments = await api
           .tournaments()
           .index()
@@ -26,7 +26,7 @@ describe('API', function () {
         { state: 'ended' },
       ];
       states.forEach(function (states) {
-        it(`correctly returns tournaments of state:${states.state}`, async function () {
+        it(`returns tournaments of state:${states.state}`, async function () {
           let tournaments = await api
             .tournaments()
             .index(states.state)
@@ -42,7 +42,7 @@ describe('API', function () {
         { t_type: 'swiss', expect: 'swiss' },
       ];
       t_types.forEach(function (t_types) {
-        it(`correctly returns tournaments of type:${t_types.t_type}`, async function () {
+        it(`returns tournaments of type:${t_types.t_type}`, async function () {
           let tournaments = await api
             .tournaments()
             .index(t_types.t_type)
@@ -51,7 +51,7 @@ describe('API', function () {
         });
       });
 
-      it('correctly return tournaments of a subdomain', async function () {
+      it('returns tournaments of a subdomain', async function () {
         let tournaments = await api
           .tournaments()
           .index((subdomain = 'reggiesroughriders'));
@@ -84,6 +84,6 @@ describe('API', function () {
     });
   });
 
-  describe('Tests matches', function () {});
-  describe('Tests matchAttachments', function () {});
+  describe('.matches()', function () {});
+  describe('.matchAttachments()', function () {});
 });

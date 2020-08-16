@@ -12,7 +12,7 @@ const apiUrl = 'https://api.challonge.com/v1/'; // This needs to be HTTPS
 class API {
   /**
    * Creates an instance of API.
-   * @param {*} key The API key
+   * @param {String} key The API key
    * @memberof API
    */
   constructor(key) {
@@ -22,8 +22,8 @@ class API {
   /**
    * Retrieves the API endpoint for a given method.
    *
-   * @param {*} method
-   * @param {*} [params=[]]
+   * @param {String} method
+   * @param {Map} [params=[]]
    *
    * @returns {Promise}
    */
@@ -154,17 +154,61 @@ class API {
     };
   };
 
-  matches = () => {
+  /**
+   * Namespace for .index() and .show() for matches
+   *
+   * @param {String} tournament Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim)
+   * @memberof API
+   * @returns an object containing .index() and .show()
+   */
+  match = (tournament) => {
     return {
-      index: () => {},
-      show: () => {},
+      index: async () => {
+        const method = `tournaments/${tournament}/matches`;
+        const response = await this.retrieve(method);
+        return response;
+      },
+      show: async (match_id) => {
+        const method = `tournaments/${tournament}/matches/${match_id}`;
+        const response = await this.retrieve(method);
+        return response.match;
+      },
     };
   };
 
-  matchAttachments = () => {
+  /**
+   * Namespace for .index() and .show() for matchAttachments
+   *
+   * @param {String} tournament Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim).
+   * @param {String} match
+   * @memberof API
+   * @returns {Object} An object containing .index() and .show() methods
+   *
+   * @todo Create/find test tournament with attachments to test
+   */
+  matchAttachments = (tournament, match) => {
     return {
-      index: () => {},
-      show: () => {},
+      /**
+       * Retrieve a match's attachments.
+       *
+       * @returns {Promise} A Promise containing an Array with attachments
+       */
+      index: async () => {
+        const method = `tournaments/${tournament}/matches/${match}/attachments`;
+        const response = await this.retrieve(method);
+        return response;
+      },
+      /**
+       * Retrieve a match's attachments.
+       *
+       * @param {String} attachment_id The match's unique ID
+       * @returns {Promise} A Promise containing the attachment
+       */
+      show: async (attachment_id) => {
+        const method = `tournaments/${tournament}/matches/${match}/attachments/${attachment_id}`;
+        const response = await this.retrieve(method);
+        return response.attachment;
+      },
     };
   };
 }

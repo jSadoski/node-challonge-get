@@ -28,18 +28,22 @@ class API {
    * @returns {Promise}
    */
   retrieve = async (method, params = []) => {
-    return await fetch(`${apiUrl}${method}.json?api_key=${this.key}`, {
-      method: 'GET',
-    })
+    let url = `${apiUrl}${method}.json?api_key=${this.key}&${params.forEach(
+      (value, key) => key + '=' + value
+    )}`;
+
+    return await fetch(url, { method: 'GET' })
       .then((res) => {
         if (res.ok) {
           return res.json();
         } else {
-          throw Error(res.statusText);
+          console.log(`'${url}' returned: ${res.status}: ${res.statusText}`);
+          return [];
         }
       })
       .catch((err) => {
-        throw err;
+        console.log(err);
+        return [];
       });
   };
 
@@ -54,7 +58,7 @@ class API {
        * Retrieve a set of tournaments created with your account.
        *
        * @param {String} state all, pending, in_progress, ended
-       * @param {String} type	single_elimination, double_elimination, round_robin, swiss
+       * @param {String} t_type	single_elimination, double_elimination, round_robin, swiss
        * @param {Date} created_after	YYYY-MM-DD
        * @param created_before	YYYY-MM-DD
        * @param subdomain	A Challonge subdomain you've published tournaments to.
@@ -63,7 +67,7 @@ class API {
        */
       index: (
         state = null,
-        type = null,
+        t_type = null,
         created_after = null,
         created_before = null,
         subdomain = null
@@ -73,8 +77,8 @@ class API {
         if (state !== null) {
           params.set('state', state);
         }
-        if (type !== null) {
-          params.set('type', type);
+        if (t_type !== null) {
+          params.set('type', t_type);
         }
         if (created_after !== null) {
           params.set('created_after', created_after);
@@ -88,7 +92,7 @@ class API {
 
         return this.retrieve(method, params)
           .then((tournaments) => tournaments)
-          .catch((err) => err);
+          .catch((err) => console.log(err));
       },
       /**
        * Retrieve a single tournament record created with your account.
@@ -98,7 +102,7 @@ class API {
        *
        * @returns {Object} The JSON object response.
        */
-      show: (
+      show: async (
         tournament,
         include_participants = false,
         include_matches = false
@@ -112,9 +116,8 @@ class API {
           params.set('include_matches', include_matches);
         }
 
-        return this.retrieve(method)
-          .then((json) => json)
-          .catch((err) => err);
+        const response = await this.retrieve(method);
+        return response.tournament;
       },
     };
   };

@@ -84,6 +84,34 @@ describe('API', function () {
     });
   });
 
-  describe('.matches()', function () {});
-  describe('.matchAttachments()', function () {});
+  describe('.matches()', () => {
+    const tournamentID = '5514195';
+    it('.index() returns matches', async () => {
+      const matches = await api.match(tournamentID).index();
+      assert.isArray(matches);
+      assert.equal(matches[0].match.tournament_id, tournamentID);
+    });
+
+    it('.show() returns a match', async () => {
+      const matchID = '149005150';
+      const match = await api.match(tournamentID).show(matchID);
+      assert.equal(match.tournament_id, tournamentID);
+    });
+  });
+
+  // TODO Create/find test tournament with attachments to test
+  describe('.matchAttachments()', () => {
+    const tournamentID = '5514195';
+    const matchID = '149005150';
+    it('.index() returns attachments', async () => {
+      const attachments = await api
+        .matchAttachments(tournamentID, matchID)
+        .index();
+      assert.isArray(attachments);
+
+      it('.show() returns an attachment', async () => {
+        // const attachment = await api.matchAttachments(tournamentID, matchID).show()
+      });
+    });
+  });
 });

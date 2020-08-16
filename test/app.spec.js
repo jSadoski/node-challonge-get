@@ -66,7 +66,24 @@ describe('API', function () {
     });
   });
 
-  describe('Tests participants', function () {});
+  describe('participants()', () => {
+    it('.index() returns participants', async () => {
+      const tournamentID = '5514195';
+      const participants = await api.participants(tournamentID).index();
+      assert.isArray(participants);
+      assert.equal(participants[0].participant.tournament_id, tournamentID);
+    });
+
+    it('.show() returns a participant', async () => {
+      const participantID = '90619162';
+      const tournamentID = '5514195';
+      const participant = await api
+        .participants(tournamentID)
+        .show(participantID);
+      assert.equal(participant.id, participantID);
+    });
+  });
+
   describe('Tests matches', function () {});
   describe('Tests matchAttachments', function () {});
 });

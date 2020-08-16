@@ -9,14 +9,18 @@
   "devDependencies": {
     "chai": "~4.2.0",
     "eslint": "~7.6.0",
+    "install": "^0.13.0",
+    "jsdoc-to-markdown": "~6.0.1",
     "mocha": "~8.1.1",
+    "npm": "^6.14.7",
     "prettier": "~2.0.5",
     "ts-node": "~8.10.2",
     "typescript": "~3.9.7"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./test/app.spec.js",
-    "debug": "node --inspect ./node_modules/mocha/bin/mocha ./test/app.spec.js"
+    "debug": "node --inspect ./node_modules/mocha/bin/mocha ./test/app.spec.js",
+    "doc": "jsdoc2md ./challongeAPI.js 2>&1 | tee jsdoc.md"
   },
   "keywords": [
     "Challonge",

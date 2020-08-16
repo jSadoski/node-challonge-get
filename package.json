@@ -15,8 +15,8 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha tests/app.spec.js",
-    "debug": "node --inspect ./node_modules/mocha/bin/mocha tests/app.spec.js"
+    "test": "./node_modules/mocha/bin/mocha ./test/app.spec.js",
+    "debug": "node --inspect ./node_modules/mocha/bin/mocha ./test/app.spec.js"
   },
   "keywords": [
     "Challonge",

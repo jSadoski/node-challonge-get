@@ -13,8 +13,6 @@ const fetch = require('node-fetch');
 
 const apiUrl = 'https://api.challonge.com/v1/';
 
-exports.API = API;
-
 /**
  * Base class for Challonge API.
  */
@@ -67,6 +65,8 @@ class API {
     return new Attachment(this.key);
   }
 }
+
+exports.API = API;
 
 /**
  * Base class for API Methods

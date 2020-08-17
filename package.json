@@ -26,6 +26,8 @@
     "GET",
     "API"
   ],
+  "repository": "https://github.com/jSadoski/node-challonge-get",
+  "readme": "README.md",
   "author": "Joe Sadoski",
   "license": "MIT"
 }

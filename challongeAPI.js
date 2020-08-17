@@ -53,7 +53,7 @@ class API {
    *
    * @returns {Match} An object containing .index() and .show()
    */
-  get match() {
+  get matches() {
     return new Match(this.key);
   }
 

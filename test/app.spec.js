@@ -79,14 +79,14 @@ describe('API', function () {
   describe('.matches()', () => {
     const tournamentID = '5514195';
     it('.index() returns matches', async () => {
-      const matches = await api.match.index(tournamentID);
+      const matches = await api.matches.index(tournamentID);
       assert.isArray(matches);
-      assert.equal(matches[0].match.tournament_id, tournamentID);
+      assert.equal(matches[0].matches.tournament_id, tournamentID);
     });
 
     it('.show() returns a match', async () => {
       const matchID = '149005150';
-      const match = await api.match.show(tournamentID, matchID);
+      const match = await api.matches.show(tournamentID, matchID);
       assert.equal(match.tournament_id, tournamentID);
     });
   });

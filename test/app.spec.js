@@ -9,13 +9,10 @@ describe('API', function () {
     api = new challonge.API(credentials.key);
   });
 
-  describe('.tournaments()', function () {
+  describe('.tournaments', function () {
     describe('.index()', function () {
-      it('returns tournaments', async function () {
-        let tournaments = await api
-          .tournaments()
-          .index()
-          .then((tournaments) => tournaments);
+      it('returns tournaments', async () => {
+        let tournaments = await api.tournaments.index();
         assert.isArray(tournaments);
       });
 
@@ -27,10 +24,7 @@ describe('API', function () {
       ];
       states.forEach(function (states) {
         it(`returns tournaments of state:${states.state}`, async function () {
-          let tournaments = await api
-            .tournaments()
-            .index(states.state)
-            .then((tournaments) => tournaments);
+          let tournaments = await api.tournaments.index(states.state);
           assert.isArray(tournaments);
         });
       });
@@ -43,25 +37,22 @@ describe('API', function () {
       ];
       t_types.forEach(function (t_types) {
         it(`returns tournaments of type:${t_types.t_type}`, async function () {
-          let tournaments = await api
-            .tournaments()
-            .index(t_types.t_type)
-            .then((tournaments) => tournaments);
+          let tournaments = await api.tournaments.index(t_types.t_type);
           assert.isArray(tournaments);
         });
       });
 
       it('returns tournaments of a subdomain', async function () {
-        let tournaments = await api
-          .tournaments()
-          .index((subdomain = 'reggiesroughriders'));
+        let tournaments = await api.tournaments.index(
+          (subdomain = 'reggiesroughriders')
+        );
         assert.isArray(tournaments);
       });
     });
 
     it('.show() returns a tournamennt', async () => {
       const url = 'reggiesroughriders';
-      const tournament = await api.tournaments().show(url);
+      const tournament = await api.tournaments.show(url);
       assert.equal(tournament.url, url);
     });
   });
@@ -69,7 +60,7 @@ describe('API', function () {
   describe('participants()', () => {
     it('.index() returns participants', async () => {
       const tournamentID = '5514195';
-      const participants = await api.participants(tournamentID).index();
+      const participants = await api.participants.index(tournamentID);
       assert.isArray(participants);
       assert.equal(participants[0].participant.tournament_id, tournamentID);
     });
@@ -77,9 +68,10 @@ describe('API', function () {
     it('.show() returns a participant', async () => {
       const participantID = '90619162';
       const tournamentID = '5514195';
-      const participant = await api
-        .participants(tournamentID)
-        .show(participantID);
+      const participant = await api.participants.show(
+        tournamentID,
+        participantID
+      );
       assert.equal(participant.id, participantID);
     });
   });
@@ -87,14 +79,14 @@ describe('API', function () {
   describe('.matches()', () => {
     const tournamentID = '5514195';
     it('.index() returns matches', async () => {
-      const matches = await api.match(tournamentID).index();
+      const matches = await api.match.index(tournamentID);
       assert.isArray(matches);
       assert.equal(matches[0].match.tournament_id, tournamentID);
     });
 
     it('.show() returns a match', async () => {
       const matchID = '149005150';
-      const match = await api.match(tournamentID).show(matchID);
+      const match = await api.match.show(tournamentID, matchID);
       assert.equal(match.tournament_id, tournamentID);
     });
   });
@@ -104,9 +96,10 @@ describe('API', function () {
     const tournamentID = '5514195';
     const matchID = '149005150';
     it('.index() returns attachments', async () => {
-      const attachments = await api
-        .matchAttachments(tournamentID, matchID)
-        .index();
+      const attachments = await api.matchAttachments.index(
+        tournamentID,
+        matchID
+      );
       assert.isArray(attachments);
 
       it('.show() returns an attachment', async () => {

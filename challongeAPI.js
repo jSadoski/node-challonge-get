@@ -1,19 +1,28 @@
-const fetch = require('node-fetch');
-const util = require('util');
+/**
+ * @file Endpoint for every GET method of Challonge API v1.
+ * See https://api.challonge.com/v1 for methods and parameters.
+ * @author Joe Sadoski <jdsadoski@gmail.com>
+ *
+ * @requires node-fetch
+ * @exports Class API
+ *
+ * @license GPL-3.0-or-later
+ */
 
-/** @type {String} */
-const apiUrl = 'https://api.challonge.com/v1/'; // This needs to be HTTPS
+const fetch = require('node-fetch');
+
+const apiUrl = 'https://api.challonge.com/v1/';
 
 /**
  * Base class for Challonge API.
- *
- * @class API
  */
 class API {
   /**
    * Creates an instance of API.
-   * @param {String} key The API key
-   * @memberof API
+   *
+   * @param {String} key The API key.
+   *
+   * @constructs
    */
   constructor(key) {
     this.key = key;
@@ -22,10 +31,13 @@ class API {
   /**
    * Retrieves the API endpoint for a given method.
    *
-   * @param {String} method
-   * @param {Map} [params=[]]
+   * @param {String} method The Challonge API method that comes
+   *  after the base URL
+   * @param {Map} [params=[]] The parameters to be passed to the
+   *  method (passed as a query string parameter)
    *
-   * @returns {Promise}
+   * @returns {Promise} A Promise containing the response object,
+   *  typically an Array of object types.
    */
   retrieve = async (method, params = []) => {
     let url = `${apiUrl}${method}.json?api_key=${this.key}&${params.forEach(
@@ -55,15 +67,24 @@ class API {
   tournaments = () => {
     return {
       /**
-       * Retrieve a set of tournaments created with your account.
+       * Retrieves a set of tournaments created by the account
+       * which owns the API key.
        *
        * @param {String} state all, pending, in_progress, ended
-       * @param {String} t_type	single_elimination, double_elimination, round_robin, swiss
-       * @param {Date} created_after	YYYY-MM-DD
-       * @param created_before	YYYY-MM-DD
-       * @param subdomain	A Challonge subdomain you've published tournaments to.
+       * @param {String} t_type	single_elimination, double_elimination,
+       *  round_robin, swiss
+       * @param {Date} created_after	!NOT IMPLEMENTED YET! YYYY-MM-DD
+       * @todo Implement created_after
+       * @param created_before	!NOT IMPLEMENTED YET! YYYY-MM-DD
+       * @todo Implement created_before
+       * @param subdomain	A Challonge subdomain you've published
+       *  tournaments to.
        *
-       * @returns {Promise}   A Promise which will contain an Array of JSON tournament objects
+       * @returns {Promise} A Promise which will contain an Array
+       *  of tournament objects (JSON)
+       *
+       * @alias tournaments.index
+       * @memberof API
        */
       index: (
         state = null,
@@ -95,12 +116,18 @@ class API {
           .catch((err) => console.log(err));
       },
       /**
-       * Retrieve a single tournament record created with your account.
-       * @param {String} tournament (in URL string)	Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim). If assigned to a subdomain, URL format must be :subdomain-:tournament_url (e.g. 'test-mytourney' for test.challonge.com/mytourney)
-       * @param {boolean} include_participants	Includes an array of associated participant records
-       * @param {boolean} include_matches	Includes an array of associated match records
+       * Retrieves a tournament.
        *
-       * @returns {Object} The JSON object response.
+       * @param {String} tournament Tournament ID (e.g. 10230) or
+       *  URL (e.g. 'single_elim' for challonge.com/single_elim).
+       * @param {boolean} include_participants	Includes an array of
+       *  associated participant records
+       * @param {boolean} include_matches	Includes an array of
+       *  associated match records
+       *
+       * @returns {Promise} A Promise which will have
+       *  the tournament object (JSON)
+       *
        */
       show: async (
         tournament,
@@ -117,23 +144,30 @@ class API {
         }
 
         const response = await this.retrieve(method);
+
+        // Challonge API returns an anonymous object
+        // containing the tournament object
         return response.tournament;
       },
     };
   };
 
   /**
-   * Gets participants (.index()) or participant (.show()).
+   * Gets participants of the given tournament.
+   * Use .index()) or .show()
    *
-   * @param {String} tournament
-   * @return {Object} Contains .index() and .show()
+   * @param {String} tournament Tournament ID (e.g. 10230) or
+   *  URL (e.g. 'single_elim' for challonge.com/single_elim).
+   * @return {Object} An object containing .index() and .show()
    */
   participants = (tournament) => {
     return {
       /**
        * Returns all the participants of the given tournament.
        *
-       * @returns {Array} An array of participant JSON objects.
+       * @returns {Promise} A Promise which will contain an Array
+       *  of participant objects (JSON)
+       *
        */
       index: async () => {
         const method = `tournaments/${tournament}/participants`;
@@ -143,31 +177,52 @@ class API {
       /**
        * Returns a participant at the given ID
        *
-       * @param {String} participant_id The participant's ID
-       * @returns {Object} The participant's JSON object
+       * @param {String} participant_id The participant's unique ID
+       * @returns {Promise} A promise which will contain a
+       *  participant object (JSON)
+       *
        */
       show: async (participant_id) => {
         const method = `tournaments/${tournament}/participants/${participant_id}`;
         const response = await this.retrieve(method);
+
+        // Challonge API returns an anonymous object
+        // containing the tournament object
         return response.participant;
       },
     };
   };
 
   /**
-   * Namespace for .index() and .show() for matches
+   * Gets matches for a given tournament.
+   * Use .index() and .show()
    *
-   * @param {String} tournament Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim)
-   * @memberof API
-   * @returns an object containing .index() and .show()
+   * @param {String} tournament Tournament ID (e.g. 10230) or
+   *  URL (e.g. 'single_elim' for challonge.com/single_elim)
+   * @returns {Object} an object containing .index() and .show()
    */
   match = (tournament) => {
     return {
+      /**
+       * Returns all the matches for the given tournament.
+       *
+       * @returns {Promise} Will contain an Array containing
+       *  match objects (JSON).
+       *
+       */
       index: async () => {
         const method = `tournaments/${tournament}/matches`;
         const response = await this.retrieve(method);
         return response;
       },
+      /**
+       * Returns a match for the given tournament and match_id
+       *
+       * @param {String} match_id The match's unique ID
+       * @todo add include_attachments parameter
+       * @returns {Promise} Will contain a match object (JSON)
+       *
+       */
       show: async (match_id) => {
         const method = `tournaments/${tournament}/matches/${match_id}`;
         const response = await this.retrieve(method);
@@ -177,11 +232,12 @@ class API {
   };
 
   /**
-   * Namespace for .index() and .show() for matchAttachments
+   * Gets match attachments.
+   * Use .index() and .show()
    *
-   * @param {String} tournament Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim).
+   * @param {String} tournament Tournament ID (e.g. 10230) or
+   * URL (e.g. 'single_elim' for challonge.com/single_elim).
    * @param {String} match
-   * @memberof API
    * @returns {Object} An object containing .index() and .show() methods
    *
    * @todo Create/find test tournament with attachments to test
@@ -191,7 +247,9 @@ class API {
       /**
        * Retrieve a match's attachments.
        *
-       * @returns {Promise} A Promise containing an Array with attachments
+       * @returns {Promise} A Promise containing an Array with
+       * attachment objects (JSON)
+       *
        */
       index: async () => {
         const method = `tournaments/${tournament}/matches/${match}/attachments`;
@@ -202,7 +260,8 @@ class API {
        * Retrieve a match's attachments.
        *
        * @param {String} attachment_id The match's unique ID
-       * @returns {Promise} A Promise containing the attachment
+       * @returns {Promise} A Promise containing the attachment (JSON)
+       *
        */
       show: async (attachment_id) => {
         const method = `tournaments/${tournament}/matches/${match}/attachments/${attachment_id}`;

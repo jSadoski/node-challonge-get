@@ -61,7 +61,6 @@ class API {
   /**
    * Gets a tournament or tournaments. Use .index() or .show()
    *
-   * @returns {Object} methods containing .index() and .show()
    */
   get tournaments() {
     class tourn {

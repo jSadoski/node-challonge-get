@@ -40,9 +40,9 @@ class API {
    *  typically an Array of object types.
    */
   retrieve = async (method, params = []) => {
-    let url = `${apiUrl}${method}.json?api_key=${this.key}&${params.forEach(
-      (value, key) => key + '=' + value
-    )}`;
+    const queryString =
+      params.forEach((value, key, map) => key + '=' + value) ?? '';
+    const url = `${apiUrl}${method}.json?api_key=${this.key}&${queryString}`;
 
     return await fetch(url, { method: 'GET' })
       .then((res) => {

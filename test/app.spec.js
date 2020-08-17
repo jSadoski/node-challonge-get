@@ -51,7 +51,7 @@ describe('API', function () {
     });
 
     it('.show() returns a tournamennt', async () => {
-      const url = 'reggiesroughriders';
+      const url = 'single_elim';
       const tournament = await api.tournaments.show(url);
       assert.equal(tournament.url, url);
     });
@@ -59,15 +59,15 @@ describe('API', function () {
 
   describe('participants()', () => {
     it('.index() returns participants', async () => {
-      const tournamentID = '5514195';
+      const tournamentID = '10230';
       const participants = await api.participants.index(tournamentID);
       assert.isArray(participants);
       assert.equal(participants[0].participant.tournament_id, tournamentID);
     });
 
     it('.show() returns a participant', async () => {
-      const participantID = '90619162';
-      const tournamentID = '5514195';
+      const participantID = '183240';
+      const tournamentID = '10230';
       const participant = await api.participants.show(
         tournamentID,
         participantID
@@ -77,15 +77,15 @@ describe('API', function () {
   });
 
   describe('.matches()', () => {
-    const tournamentID = '5514195';
+    const tournamentID = '10230';
     it('.index() returns matches', async () => {
       const matches = await api.matches.index(tournamentID);
       assert.isArray(matches);
-      assert.equal(matches[0].matches.tournament_id, tournamentID);
+      assert.equal(matches[0].match.tournament_id, tournamentID);
     });
 
     it('.show() returns a match', async () => {
-      const matchID = '149005150';
+      const matchID = '273421';
       const match = await api.matches.show(tournamentID, matchID);
       assert.equal(match.tournament_id, tournamentID);
     });

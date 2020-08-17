@@ -20,7 +20,7 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./test/app.spec.js",
     "debug": "node --inspect ./node_modules/mocha/bin/mocha ./test/app.spec.js",
-    "doc": "jsdoc2md ./challongeAPI.js 2>&1 | tee jsdoc.md"
+    "doc": "jsdoc2md ./challongeAPI.js 2>&1 | tee JSDOC.md"
   },
   "keywords": [
     "Challonge",

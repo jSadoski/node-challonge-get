@@ -49,13 +49,12 @@ class API {
         if (res.ok) {
           return res.json();
         } else {
-          console.log(`'${url}' returned: ${res.status}: ${res.statusText}`);
-          return [];
+          return `'${url}' returned: ${res.status}: ${res.statusText}`;
         }
       })
       .catch((err) => {
         console.log(err);
-        return [];
+        return err;
       });
   };
 
